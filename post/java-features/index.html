@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
-	<meta name="generator" content="Hugo 0.52" /><head>
+<head><head>
     <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
     <meta name="baidu-site-verification" content="LRrmH41lz7" />
     <meta charset="utf-8">
@@ -14,9 +13,9 @@
     <meta name="keyword"  content="Colin">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Colin-Colin Blog</title>
+    <title>Java Features-Colin Blog</title>
 
-    <link rel="canonical" href="/">
+    <link rel="canonical" href="/post/java-features/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -112,14 +111,33 @@
 
 
 
-<header class="intro-header" style="background-image: url('/img/home-bg-sunset.jpg')">
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/java8.jpg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>Colin </h1>
-                    
-		    <span class="subheading"></span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/code" title="code">
+                           code
+                        </a>
+                        
+                       <a class="tag" href="/tags/java" title="java">
+                           java
+                        </a>
+                        
+                    </div>
+                    <h1>Java Features</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by Colin on Tuesday, December 11, 2018
+                        
+                    </span>
                 </div>
             </div>
         </div>
@@ -128,150 +146,212 @@
 
 
 
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li><a href="#java-features">Java Features</a>
+<ul>
+<li><a href="#lambda-since-java-8">Lambda <code>Since Java 8</code></a></li>
+<li><a href="#stream-since-java-8">Stream <code>Since Java 8</code></a></li>
+<li><a href="#optional">Optional</a></li>
+<li><a href="#module-since-java-9">Module <code>Since Java 9</code></a></li>
+</ul></li>
+<li><a href="#spring-5">Spring 5</a>
+<ul>
+<li><a href="#webflux">WebFlux</a></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h1 id="java-features">Java Features</h1>
+
+<h2 id="lambda-since-java-8">Lambda <code>Since Java 8</code></h2>
+
+<blockquote>
+<p>函数式编程
+语法： (args?) -&gt; {body}</p>
+</blockquote>
+
+<ul>
+<li>eg:</li>
+</ul>
+
+<pre><code class="language-Java">() -&gt; System.out.println(&quot;Hello Lambda!&quot;);
+
+(String s) -&gt; System.out.println(s);
+
+(int a, int b) -&gt; return a + b;
+
+(int a, int b) -&gt; {
+    System.out.printf(&quot;a + b = %d\n&quot;, a + b);
+    return a + b;
+};
+</code></pre>
+
+<ul>
+<li>Lambda 与 匿名内部类</li>
+</ul>
+
+<pre><code class="language-Java">// 匿名内部类
+new Thread(new Runnable() {
+  @Override
+  public void run() {
+    System.out.println(&quot;我是匿名内部类&quot;);
+  }
+}).start();
+
+// Lambda
+new Thread(() -&gt; System.out.println(&quot;我是Lambda&quot;)).start();
+</code></pre>
+
+<ul>
+<li>自定义函数接口</li>
+</ul>
+
+<pre><code class="language-Java">// 通过@FunctionalInterface注解定义
+@FunctionalInterface
+public interface ConsumerInterface&lt;T&gt;{
+    void accept(T t);
+}
+
+// 创建
+// (args) -&gt; System.out.println(args) 可以简写为 System.out::println
+ConsumerInterface consumerInterface = (args) -&gt; System.out.println(args);
+
+// 调用
+consumerInterface.accept(&quot;Hello FunctionalInterface!&quot;);
+</code></pre>
+
+<h2 id="stream-since-java-8">Stream <code>Since Java 8</code></h2>
+
+<blockquote>
+<p>数据流式处理
+stream 串行流
+parallelStream 并行流</p>
+</blockquote>
+
+<pre><code class="language-sequence">Title: Demo
+stream-&gt;filter: 过滤数据
+filter-&gt;sorted: 排序
+sorted-&gt;map: 转换
+map--&gt;collect: 组装
+</code></pre>
+
+<pre><code class="language-Java">List people;
+people.stream()
+    .filter(person -&gt; person.getGender() == 0)
+    .sorted((a, b) -&gt; a - b)
+    .map()
+</code></pre>
+
+<h2 id="optional">Optional</h2>
+
+<blockquote>
+<p>可选值
+避免过多的控制判断</p>
+</blockquote>
+
+<pre><code>// 创建一个Optional对象，参数不能为空
+Optional.of(Object);
+// 创建一个Optional对象
+Optional&lt;Integer&gt; o = Optional.ofNullable(int);
+// 判断是否存在
+o.isPresent();
+// 存在则返回o，否则返回0
+o.orElse(() -&gt; 0);
+// 存在则返回o，否则返回0，可使用Lambda表达式
+o.orElseGet(() -&gt; {return 0;});
+
+o.ifPresent(Consumer&lt;? super T&gt; action);
+</code></pre>
+
+<hr />
+
+<h2 id="module-since-java-9">Module <code>Since Java 9</code></h2>
+
+<blockquote>
+<p>模块化</p>
+</blockquote>
+
+<hr />
+
+<h1 id="spring-5">Spring 5</h1>
+
+<h2 id="webflux">WebFlux</h2>
+
+<blockquote>
+<p>响应式编程</p>
+</blockquote>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/post/http/" data-toggle="tooltip" data-placement="top" title="HTTP">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/search/placeholder/" data-toggle="tooltip" data-placement="top" title="">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
   
-<div class="container">
-    <div class="row">
-        
-        
-   	    <div class="
-            col-lg-8 col-lg-offset-1
-            col-md-8 col-md-offset-1
-            col-sm-12
-            col-xs-12
-            post-container
-        ">
-            
-
-<div class="post-preview">
-    <a href="https://blog.colin.cc/post/http/">
-        <h2 class="post-title">
-            HTTP
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Colin Tuesday, December 11, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="https://blog.colin.cc/post/java-features/">
-        <h2 class="post-title">
-            Java Features
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            Java Features Lambda Since Java 8 函数式编程 语法： (args?) -&gt; {body} eg: () -&gt; System.out.println(&quot;Hello Lambda!&quot;); (String s) -&gt; System.out.println(s); (int a, int b) -&gt; return a + b; (int a, int b) -&gt; { System.out.printf(&quot;a + b = %d\n&quot;, a + b); return a + b; }; Lambda 与 匿名内部类 // 匿名内部类 new Thread(new Runnable()
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Colin Tuesday, December 11, 2018
-    </p>
-</div>
-<hr>
-
-
-            
+              
+<div id="disqus-comment"></div>
 
 
 
-       	</div>
-        
-
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-    
-    <section>
-        <hr class="hidden-sm hidden-xs">
-        <h5>FEATURED TAGS</h5>
-        <div class="tags">
-             
-            
-                
-            
-                
-            
-                
-            
-        </div>
-    </section>
-    
-
-    
-    <section class="visible-md visible-lg">
-        <hr><h5><a href="">ABOUT ME</a></h5>
-        <div class="short-about">
-            
-            <img src="/img/avatar.jpg" />
-            
-            
-                <p>Software Developer, Open Source Enthusiast and Life Adventurer</p>
-            
-           
-           <ul class="list-inline"> 
-               
-               <li>
-                   <a href="https://blog.colin.cc/index.xml" rel="alternate" type="application/rss+xml" title="Colin" >
-                       <span class="fa-stack fa-lg">
-                           <i class="fa fa-circle fa-stack-2x"></i>
-                           <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
-                       </span>
-                   </a>
-               </li>
-               
-               
-               
-               
-               
-               
-               <li>
-                   <a target="_blank" href="/hk_tianyi">
-                       <span class="fa-stack fa-lg">
-                           <i class="fa fa-circle fa-stack-2x"></i>
-                           <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
-                       </span>
-                   </a>
-               </li>
-               
-               
-               <li>
-                   <a target="_blank" href="https://github.com/hktianyi/">
-                       <span class="fa-stack fa-lg">
-                           <i class="fa fa-circle fa-stack-2x"></i>
-                           <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                       </span>
-                   </a>
-               </li>
-               
-               
-               
-                </ul>
             </div>
-    </section>
-    
-    
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-    
-    
-</div>
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
 
-	</div>
-</div>
-
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
 
 
 
@@ -283,7 +363,7 @@
                 <ul class="list-inline text-center">
                    
                    <li>
-                       <a href="https://blog.colin.cc/index.xml" rel="alternate" type="application/rss+xml" title="Colin" >
+                       <a href="" rel="alternate" type="application/rss+xml" title="Colin" >
                            <span class="fa-stack fa-lg">
                                <i class="fa fa-circle fa-stack-2x"></i>
                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>

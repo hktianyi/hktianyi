@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Colin</title>
+    <link>https://blog.colin.cc/categories/</link>
+    <description>Recent content in Categories on Colin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    
+	<atom:link href="https://blog.colin.cc/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>code</title>
+      <link>https://blog.colin.cc/categories/code/</link>
+      <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.colin.cc/categories/code/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

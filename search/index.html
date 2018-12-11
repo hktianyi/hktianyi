@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
-	<meta name="generator" content="Hugo 0.52" /><head>
+<head><head>
     <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
     <meta name="baidu-site-verification" content="LRrmH41lz7" />
     <meta charset="utf-8">
@@ -14,9 +13,9 @@
     <meta name="keyword"  content="Colin">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Colin-Colin Blog</title>
+    <title>Searches-Colin Blog</title>
 
-    <link rel="canonical" href="/">
+    <link rel="canonical" href="/search/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -128,7 +127,6 @@
 
 
 
-  
 <div class="container">
     <div class="row">
         
@@ -141,47 +139,113 @@
             post-container
         ">
             
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">
 
-<div class="post-preview">
-    <a href="https://blog.colin.cc/post/http/">
-        <h2 class="post-title">
-            HTTP
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Colin Tuesday, December 11, 2018
-    </p>
-</div>
-<hr>
+<div id="search-searchbar"></div>
+ <div class="post-list" id="search-hits">
+ </div>
 
-<div class="post-preview">
-    <a href="https://blog.colin.cc/post/java-features/">
-        <h2 class="post-title">
-            Java Features
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            Java Features Lambda Since Java 8 函数式编程 语法： (args?) -&gt; {body} eg: () -&gt; System.out.println(&quot;Hello Lambda!&quot;); (String s) -&gt; System.out.println(s); (int a, int b) -&gt; return a + b; (int a, int b) -&gt; { System.out.printf(&quot;a + b = %d\n&quot;, a + b); return a + b; }; Lambda 与 匿名内部类 // 匿名内部类 new Thread(new Runnable()
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by Colin Tuesday, December 11, 2018
-    </p>
-</div>
-<hr>
+<script>
+const search = instantsearch({
+  appId: '',
+  indexName: '',
+  apiKey: ''
+});
+
+const hitTemplate = function(hit) {
 
 
-            
+  let date = '';
+  if (hit.date) {
+    date = moment.unix(hit.date).format('MMM D, YYYY');
+  }
+  let url = `${hit.url}#${hit.anchor}`;
+  const title = hit._highlightResult.title.value;
+
+  let breadcrumbs = '';
+  if (hit._highlightResult.headings) {
+    breadcrumbs = hit._highlightResult.headings.map(match => {
+      return `<span class="post-breadcrumb">${match.value}</span>`
+    }).join(' > ')
+  }
+
+  let content = "" ; 
+  if (hit._highlightResult.content){
+      content = hit._highlightResult.content.value;
+  }
+  else{
+      content = hit.summary;
+  }
 
 
+  return `
+    <div class="post-item">
+      <span class="post-meta">${date}</span>
+      <h2><a class="post-link" href="${url}">${title}</a></h2>
+      <a href="${url}" class="post-breadcrumbs">${breadcrumbs}</a>
+      <div class="post-snippet">${content}</div>
+    </div>
+  `;
+}
+
+
+search.addWidget(
+  instantsearch.widgets.searchBox({
+    container: '#search-searchbar',
+    placeholder: 'Search into posts...',
+    poweredBy: true // This is required if you're on the free Community plan
+  })
+);
+
+search.addWidget(
+  instantsearch.widgets.hits({
+    container: '#search-hits',
+    templates: {
+      item: hitTemplate
+    }
+  })
+);
+
+search.start();
+</script>
+
+<style>
+.ais-search-box {
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+.post-item {
+  margin-bottom: 30px;
+}
+.post-link .ais-Highlight {
+  color: #111;
+  font-style: normal;
+  text-decoration: underline;
+}
+.post-breadcrumbs {
+  color: #424242;
+  display: block;
+}
+.post-breadcrumb {
+  font-size: 18px;
+  color: #424242;
+}
+.post-breadcrumb .ais-Highlight {
+  font-weight: bold;
+  font-style: normal;
+}
+.post-snippet .ais-Highlight {
+  color: #2a7ae2;
+  font-style: normal;
+  font-weight: bold;
+}
+.post-snippet img {
+  display: none;
+}
+</style>
 
        	</div>
         
@@ -225,7 +289,7 @@
            <ul class="list-inline"> 
                
                <li>
-                   <a href="https://blog.colin.cc/index.xml" rel="alternate" type="application/rss+xml" title="Colin" >
+                   <a href="https://blog.colin.cc/search/index.xml" rel="alternate" type="application/rss+xml" title="Colin" >
                        <span class="fa-stack fa-lg">
                            <i class="fa fa-circle fa-stack-2x"></i>
                            <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
@@ -274,8 +338,6 @@
 
 
 
-
-
 <footer>
     <div class="container">
         <div class="row">
@@ -283,7 +345,7 @@
                 <ul class="list-inline text-center">
                    
                    <li>
-                       <a href="https://blog.colin.cc/index.xml" rel="alternate" type="application/rss+xml" title="Colin" >
+                       <a href="https://blog.colin.cc/search/index.xml" rel="alternate" type="application/rss+xml" title="Colin" >
                            <span class="fa-stack fa-lg">
                                <i class="fa fa-circle fa-stack-2x"></i>
                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
@@ -333,7 +395,7 @@
                     
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Colin  2018
+                    Copyright &copy; Colin  0001
                 </p>
             </div>
         </div>
